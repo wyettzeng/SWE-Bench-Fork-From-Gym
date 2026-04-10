@@ -518,7 +518,7 @@ def main(
                 predictions = [json.loads(line) for line in f]
         else:
             raise ValueError("Predictions path must be \"gold\", .json, or .jsonl")
-    predictions = {pred[KEY_INSTANCE_ID]: pred for pred in predictions}
+    predictions = {pred[KEY_INSTANCE_ID]: pred for _, pred in predictions.items()}
 
     # get dataset from predictions
     dataset = get_dataset_from_preds(dataset_name, split, instance_ids, predictions, run_id)
