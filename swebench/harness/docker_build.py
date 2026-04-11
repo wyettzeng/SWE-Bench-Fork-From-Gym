@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import re
 import traceback
 import docker
@@ -8,7 +9,7 @@ import docker.errors
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-USE_HOST_NETWORK = False
+USE_HOST_NETWORK = True
 
 from swebench.harness.constants import (
     BASE_IMAGE_BUILD_DIR,
@@ -28,6 +29,8 @@ from swebench.harness.docker_utils import (
 )
 
 ansi_escape = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
+DEFAULT_INSTANCE_IMAGE_NAMESPACE = "docker.io/xingyaoww"
+DEFAULT_DOCKER_TIMEOUT = int(os.environ.get("SWEBENCH_DOCKER_TIMEOUT", "600"))
 
 
 class BuildImageError(Exception):
@@ -67,6 +70,80 @@ def close_logger(logger):
     for handler in logger.handlers:
         handler.close()
         logger.removeHandler(handler)
+
+
+def get_remote_instance_image_name(
+        test_spec: TestSpec,
+        namespace: str = DEFAULT_INSTANCE_IMAGE_NAMESPACE,
+    ) -> str:
+    """
+    Convert the local instance image tag to the published registry tag.
+
+    Docker Hub repositories cannot contain double underscores, so published images
+    replace "__" with "_s_". The local harness still expects the original local tag.
+    """
+    image_name = test_spec.instance_image_key.replace("__", "_s_").lower()
+    namespace = namespace.rstrip("/")
+    return f"{namespace}/{image_name}"
+
+
+def pull_instance_image(
+        test_spec: TestSpec,
+        client: docker.DockerClient,
+        logger: logging.Logger,
+        force_rebuild: bool = False,
+        namespace: str = DEFAULT_INSTANCE_IMAGE_NAMESPACE,
+    ):
+    """
+    Pull a pre-built instance image from a registry and tag it with the local image name
+    expected by the harness.
+    """
+    local_image_name = test_spec.instance_image_key
+    remote_image_name = get_remote_instance_image_name(test_spec, namespace)
+
+    if force_rebuild:
+        remove_image(client, local_image_name, "quiet")
+
+    try:
+        client.images.get(local_image_name)
+        logger.info(f"Image {local_image_name} already exists locally, skipping pull.")
+        return
+    except docker.errors.ImageNotFound:
+        pass
+
+    logger.info(
+        f"Pulling pre-built image for {test_spec.instance_id} from {remote_image_name}"
+    )
+    try:
+        repository, tag = remote_image_name.rsplit(":", 1)
+        pull_log = client.api.pull(
+            repository=repository,
+            tag=tag,
+            stream=True,
+            decode=True,
+            platform=test_spec.platform,
+        )
+        for chunk in pull_log:
+            status = chunk.get("status")
+            progress = chunk.get("progress")
+            error = chunk.get("error") or chunk.get("errorDetail", {}).get("message")
+            if error:
+                raise RuntimeError(error)
+            if status:
+                logger.info(
+                    status if progress is None else f"{status} {progress}"
+                )
+
+        client.api.tag(remote_image_name, *local_image_name.rsplit(":", 1))
+        logger.info(
+            f"Pulled {remote_image_name} and tagged it as {local_image_name}"
+        )
+    except Exception as e:
+        logger.error(
+            f"Failed to pull remote image {remote_image_name}: {e}\n"
+            f"{traceback.format_exc()}"
+        )
+        raise BuildImageError(local_image_name, str(e), logger) from e
 
 
 def build_image(
@@ -341,7 +418,9 @@ def build_instance_images(
         client: docker.DockerClient,
         dataset: list,
         force_rebuild: bool = False,
-        max_workers: int = 4
+        max_workers: int = 4,
+        use_remote_instance_images: bool = False,
+        remote_instance_image_namespace: str = DEFAULT_INSTANCE_IMAGE_NAMESPACE,
     ):
     """
     Builds the instance images required for the dataset if they do not already exist.
@@ -352,12 +431,14 @@ def build_instance_images(
         force_rebuild (bool): Whether to force rebuild the images even if they already exist
         max_workers (int): Maximum number of workers to use for building images
     """
-    # Build environment images (and base images as needed) first
     test_specs = list(map(make_test_spec, dataset))
     if force_rebuild:
         for spec in test_specs:
             remove_image(client, spec.instance_image_key, "quiet")
-    _, env_failed = build_env_images(client, test_specs, force_rebuild, max_workers)
+
+    env_failed = []
+    if not use_remote_instance_images:
+        _, env_failed = build_env_images(client, test_specs, force_rebuild, max_workers)
 
     if len(env_failed) > 0:
         # Don't build images for instances that depend on failed-to-build env images
@@ -380,6 +461,8 @@ def build_instance_images(
                     client,
                     None,  # logger is created in build_instance_image, don't make loggers before you need them
                     False,
+                    use_remote_instance_images,
+                    remote_instance_image_namespace,
                 ): test_spec
                 for test_spec in test_specs
             }
@@ -417,6 +500,8 @@ def build_instance_image(
         client: docker.DockerClient,
         logger: logging.Logger|None,
         nocache: bool,
+        use_remote_image: bool = False,
+        remote_image_namespace: str = DEFAULT_INSTANCE_IMAGE_NAMESPACE,
     ):
     """
     Builds the instance image for the given test spec if it does not already exist.
@@ -433,6 +518,18 @@ def build_instance_image(
     if logger is None:
         new_logger = True
         logger = setup_logger(test_spec.instance_id, build_dir / "prepare_image.log")
+
+    if use_remote_image:
+        pull_instance_image(
+            test_spec,
+            client,
+            logger,
+            force_rebuild=False,
+            namespace=remote_image_namespace,
+        )
+        if new_logger:
+            close_logger(logger)
+        return
 
     # Get the image names and dockerfile for the instance image
     image_name = test_spec.instance_image_key
@@ -492,7 +589,9 @@ def build_container(
         run_id: str,
         logger: logging.Logger,
         nocache: bool,
-        force_rebuild: bool = False
+        force_rebuild: bool = False,
+        use_remote_instance_image: bool = False,
+        remote_instance_image_namespace: str = DEFAULT_INSTANCE_IMAGE_NAMESPACE,
     ):
     """
     Builds the instance image for the given test spec and creates a container from the image.
@@ -508,7 +607,14 @@ def build_container(
     # Build corresponding instance image
     if force_rebuild:
         remove_image(client, test_spec.instance_image_key, "quiet")
-    build_instance_image(test_spec, client, logger, nocache)
+    build_instance_image(
+        test_spec,
+        client,
+        logger,
+        nocache,
+        use_remote_instance_image,
+        remote_instance_image_namespace,
+    )
 
     container = None
     try:

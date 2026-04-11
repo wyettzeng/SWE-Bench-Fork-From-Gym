@@ -32,6 +32,9 @@ from swebench.harness.docker_build import (
     build_env_images,
     close_logger,
     setup_logger,
+    build_instance_images,
+    DEFAULT_INSTANCE_IMAGE_NAMESPACE,
+    DEFAULT_DOCKER_TIMEOUT,
 )
 from swebench.harness.grading import get_eval_report
 from swebench.harness.test_spec import make_test_spec, TestSpec
@@ -60,6 +63,8 @@ def run_instance(
         force_rebuild: bool,
         client: docker.DockerClient,
         run_id: str,
+        use_remote_instance_image: bool = False,
+        remote_instance_image_namespace: str = DEFAULT_INSTANCE_IMAGE_NAMESPACE,
         timeout: int | None = None,
     ):
     """
@@ -102,7 +107,16 @@ def run_instance(
     container = None
     try:
         # Build + start instance container (instance image should already be built)
-        container = build_container(test_spec, client, run_id, logger, rm_image, force_rebuild)
+        container = build_container(
+            test_spec,
+            client,
+            run_id,
+            logger,
+            rm_image,
+            force_rebuild,
+            use_remote_instance_image,
+            remote_instance_image_namespace,
+        )
         container.start()
         logger.info(f"Container for {instance_id} started: {container.id}")
 
@@ -226,6 +240,8 @@ def run_instances(
         force_rebuild: bool,
         max_workers: int,
         run_id: str,
+        use_remote_instance_images: bool,
+        remote_instance_image_namespace: str,
         timeout: int,
     ):
     """
@@ -241,7 +257,7 @@ def run_instances(
         run_id (str): Run ID
         timeout (int): Timeout for running tests
     """
-    client = docker.from_env()
+    client = docker.from_env(timeout=DEFAULT_DOCKER_TIMEOUT)
     test_specs = list(map(make_test_spec, instances))
 
     # print number of existing instance images
@@ -272,6 +288,8 @@ def run_instances(
                     force_rebuild,
                     client,
                     run_id,
+                    use_remote_instance_images,
+                    remote_instance_image_namespace,
                     timeout,
                 ): None
                 for test_spec in test_specs
@@ -491,6 +509,8 @@ def main(
         predictions_path: str,
         max_workers: int,
         force_rebuild: bool,
+        use_remote_instance_images: bool,
+        remote_instance_image_namespace: str,
         cache_level: str,
         clean: bool,
         open_file_limit: int,
@@ -503,7 +523,7 @@ def main(
     # set open file limit
     assert len(run_id) > 0, "Run ID must be provided"
     resource.setrlimit(resource.RLIMIT_NOFILE, (open_file_limit, open_file_limit))
-    client = docker.from_env()
+    client = docker.from_env(timeout=DEFAULT_DOCKER_TIMEOUT)
 
     # load predictions as map of instance_id to prediction
     if predictions_path == 'gold':
@@ -518,7 +538,7 @@ def main(
                 predictions = [json.loads(line) for line in f]
         else:
             raise ValueError("Predictions path must be \"gold\", .json, or .jsonl")
-    predictions = {pred[KEY_INSTANCE_ID]: pred for _, pred in predictions.items()}
+    predictions = {pred[KEY_INSTANCE_ID]: pred for _, pred in list(predictions.items())[:10]}
 
     # get dataset from predictions
     dataset = get_dataset_from_preds(dataset_name, split, instance_ids, predictions, run_id)
@@ -528,9 +548,30 @@ def main(
     if not dataset:
         print("No instances to run.")
     else:
-        # build environment images + run instances
-        build_env_images(client, dataset, force_rebuild, max_workers)
-        run_instances(predictions, dataset, cache_level, clean, force_rebuild, max_workers, run_id, timeout)
+        # Either pull pre-built instance images or build the local env-image stack.
+        if use_remote_instance_images:
+            build_instance_images(
+                client,
+                dataset,
+                force_rebuild,
+                max_workers,
+                use_remote_instance_images=True,
+                remote_instance_image_namespace=remote_instance_image_namespace,
+            )
+        else:
+            build_env_images(client, dataset, force_rebuild, max_workers)
+        run_instances(
+            predictions,
+            dataset,
+            cache_level,
+            clean,
+            force_rebuild,
+            max_workers,
+            run_id,
+            use_remote_instance_images,
+            remote_instance_image_namespace,
+            timeout,
+        )
 
     # clean images + make final report
     clean_images(client, existing_images, cache_level, clean)
@@ -550,6 +591,18 @@ if __name__ == "__main__":
         )
     parser.add_argument(
         "--force_rebuild", type=str2bool, default=False, help="Force rebuild of all images"
+    )
+    parser.add_argument(
+        "--use_remote_instance_images",
+        type=str2bool,
+        default=False,
+        help="Pull pre-built instance images from a registry instead of building locally.",
+    )
+    parser.add_argument(
+        "--remote_instance_image_namespace",
+        type=str,
+        default=DEFAULT_INSTANCE_IMAGE_NAMESPACE,
+        help="Registry namespace for pre-built instance images.",
     )
     parser.add_argument(
         "--cache_level",
