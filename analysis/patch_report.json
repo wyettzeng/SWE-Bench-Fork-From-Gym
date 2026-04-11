@@ -1,0 +1,573 @@
+{
+  "category_counts": {
+    "invalid_unified_hunk_header": 1,
+    "other_patch_like": 1,
+    "plain_text_instead_of_diff": 19,
+    "source_code_instead_of_diff": 5,
+    "starts_as_diff": 61,
+    "wrapper_text": 6
+  },
+  "garbage_error_count": 28,
+  "root": "logs/run_evaluation/gym_pandas_qwen3/hosted_vllm__Qwen__Qwen3-Coder-30B-A3B-Instruct",
+  "rows": [
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/apply.py b/pandas/core/apply.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-47222"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/indexes/api.py b/pandas/core/indexes/api.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-47586"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/io/xml.py b/pandas/io/xml.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-47630"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "No changes required - the pandas codebase already implements consistent API for numeric_only parameter across different operations. All referenced issues in the PR have been closed, indicating the consistency has been achieved.",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-47749"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/exchange/column.py b/pandas/core/exchange/column.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-47804"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/internals/blocks.py b/pandas/core/internals/blocks.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-47987"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/io/sas/sas_constants.py b/pandas/io/sas/sas_constants.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-48050"
+    },
+    {
+      "category": "source_code_instead_of_diff",
+      "first_line": "def _iter_data(self, data=None, keep_index=False, fillna=None):",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-48073"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/arrays/datetimes.py b/pandas/core/arrays/datetimes.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-48555"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/io/parsers/c_parser_wrapper.py b/pandas/io/parsers/c_parser_wrapper.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-48651"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/reshape/pivot.py b/pandas/core/reshape/pivot.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-48713"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/io/parsers/c_parser_wrapper.py b/pandas/io/parsers/c_parser_wrapper.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-48774"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "f\"new categories must not include old categories: {already_included}\"",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-48847"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/indexing.py b/pandas/core/indexing.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-48890"
+    },
+    {
+      "category": "source_code_instead_of_diff",
+      "first_line": "from __future__ import annotations",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-48943"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/_libs/missing.pyx b/pandas/_libs/missing.pyx",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-49155"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/tools/datetimes.py b/pandas/core/tools/datetimes.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-49333"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/dtypes/cast.py b/pandas/core/dtypes/cast.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-49566"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "SUMMARY OF THE ISSUE AND PROPOSED FIX",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-49579"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "Implementation complete. The following changes were made to enable convert_dtypes to work with pd.ArrowDtype:",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-50094"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "result = arg",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-50265"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/arrays/numpy_.py b/pandas/core/arrays/numpy_.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-50331"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/arrays/base.py b/pandas/core/arrays/base.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-50506"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/arrays/datetimelike.py b/pandas/core/arrays/datetimelike.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-50530"
+    },
+    {
+      "category": "invalid_unified_hunk_header",
+      "first_line": "diff --git a/pandas/core/dtypes/common.py b/pandas/core/dtypes/common.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-50672"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/io/xml.py b/pandas/io/xml.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-50759"
+    },
+    {
+      "category": "wrapper_text",
+      "first_line": "=== FINAL PATCH FOR TO_DATETIME UNIT ISSUE ===",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-50909"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/computation/ops.py b/pandas/core/computation/ops.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-50988"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/frame.py b/pandas/core/frame.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-51009"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/indexing.py b/pandas/core/indexing.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-51193"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/io/xml.py b/pandas/io/xml.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-51355"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "The actual change I made was to enhance the _iterate_slices method in pandas/core/groupby/generic.py by adding comprehensive documentation explaining:",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-51398"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/indexes/base.py b/pandas/core/indexes/base.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-51401"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/io/parsers/base_parser.py b/pandas/io/parsers/base_parser.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-51418"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/indexes/multi.py b/pandas/core/indexes/multi.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-51605"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/generic.py b/pandas/core/generic.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-51756"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/arrays/arrow/array.py b/pandas/core/arrays/arrow/array.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-51854"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/plotting/_matplotlib/style.py b/pandas/plotting/_matplotlib/style.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-51967"
+    },
+    {
+      "category": "source_code_instead_of_diff",
+      "first_line": "def map(self, mapper, na_action=None):",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-51979"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "elif isinstance(val, (np.datetime64, dt.datetime)):",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-52212"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "Fix for inconsistent behavior with groupby/min and categorical data",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-52236"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/window/rolling.py b/pandas/core/window/rolling.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-53216"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/groupby/groupby.py b/pandas/core/groupby/groupby.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-53272"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/nanops.py b/pandas/core/nanops.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-53418"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "if new_value == NPY_NAT:",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-53421"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/io/common.py b/pandas/io/common.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-53443"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/groupby/generic.py b/pandas/core/groupby/generic.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-53517"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/arrays/period.py b/pandas/core/arrays/period.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-53709"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "else:",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-53764"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/_libs/__init__.py b/pandas/_libs/__init__.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-53958"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "axis = self._get_axis_number(axis)",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-54166"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/plotting/_matplotlib/core.py b/pandas/plotting/_matplotlib/core.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-54189"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "if mask.any():",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-54226"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "#  because maybe_cast_pointwise_result will do a try/except",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-54272"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/io/formats/excel.py b/pandas/io/formats/excel.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-54302"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/dtypes/common.py b/pandas/core/dtypes/common.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-54388"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/io/json/_json.py b/pandas/io/json/_json.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-55495"
+    },
+    {
+      "category": "source_code_instead_of_diff",
+      "first_line": "\"\"\"",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-55518"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "Fix for merge_asof with categorical columns having different category orders",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-55580"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/dtypes/cast.py b/pandas/core/dtypes/cast.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-55633"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/io/sql.py b/pandas/io/sql.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-55690"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/_libs/tslibs/conversion.pyx b/pandas/_libs/tslibs/conversion.pyx",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-55712"
+    },
+    {
+      "category": "wrapper_text",
+      "first_line": "=== FINAL PATCH SUMMARY ===",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-55719"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/frame.py b/pandas/core/frame.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-55868"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/frame.py b/pandas/core/frame.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-56016"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/frame.py b/pandas/core/frame.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-56120"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/reshape/pivot.py b/pandas/core/reshape/pivot.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-56237"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/arrays/arrow/array.py b/pandas/core/arrays/arrow/array.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-56347"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/dtypes/astype.py b/pandas/core/dtypes/astype.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-56350"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/window/rolling.py b/pandas/core/window/rolling.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-56370"
+    },
+    {
+      "category": "source_code_instead_of_diff",
+      "first_line": "def _str_find(self, sub: str, start: int = 0, end: int | None = None):",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-56412"
+    },
+    {
+      "category": "wrapper_text",
+      "first_line": "=== FINAL PATCH SUMMARY ===",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-56531"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/arrays/arrow/array.py b/pandas/core/arrays/arrow/array.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-56580"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/arrays/arrow/array.py b/pandas/core/arrays/arrow/array.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-56691"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "\"int64\": \"l\",",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-56772"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "No functional changes made due to inability to reproduce the specific issue.",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-56926"
+    },
+    {
+      "category": "wrapper_text",
+      "first_line": "=== IMPLEMENTATION COMPLETE ===",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-56981"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/arrays/arrow/array.py b/pandas/core/arrays/arrow/array.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-56985"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/reshape/merge.py b/pandas/core/reshape/merge.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-57018"
+    },
+    {
+      "category": "other_patch_like",
+      "first_line": "--- a/pandas/core/groupby/groupby.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-57102"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/interchange/buffer.py b/pandas/core/interchange/buffer.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-57175"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/window/ewm.py b/pandas/core/window/ewm.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-57225"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/reshape/concat.py b/pandas/core/reshape/concat.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-57250"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/internals/managers.py b/pandas/core/internals/managers.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-57272"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/indexes/base.py b/pandas/core/indexes/base.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-57329"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/groupby/ops.py b/pandas/core/groupby/ops.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-57474"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "# don't overwrite columns unnecessarily",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-57637"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "The following structure: {uuid, table_styles, caption, head, body,",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-57880"
+    },
+    {
+      "category": "wrapper_text",
+      "first_line": "=== ACTUAL FIX IN HOLIDAY.PY ===",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-57938"
+    },
+    {
+      "category": "plain_text_instead_of_diff",
+      "first_line": "No actual code changes were made since I cannot modify the Cython source files directly in this environment. The fix needs to be implemented in pandas/_libs/groupby.pyx in the median_linear_mask and median_linear functions to properly handle NaT values in timedelta data during groupby median operations.",
+      "has_garbage_error": true,
+      "instance": "pandas-dev__pandas-57957"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/groupby/groupby.py b/pandas/core/groupby/groupby.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-58030"
+    },
+    {
+      "category": "wrapper_text",
+      "first_line": "=== PATCH CONTENT ===",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-58335"
+    },
+    {
+      "category": "starts_as_diff",
+      "first_line": "diff --git a/pandas/core/arrays/timedeltas.py b/pandas/core/arrays/timedeltas.py",
+      "has_garbage_error": false,
+      "instance": "pandas-dev__pandas-58383"
+    }
+  ],
+  "total_patches": 93
+}
