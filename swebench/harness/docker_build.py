@@ -167,6 +167,9 @@ def build_image(
         build_dir (Path): Directory for the build context (will also contain logs, scripts, and artifacts)
         nocache (bool): Whether to use the cache when building
     """
+    # fasrc cannot use conda
+    dockerfile.replace("https://repo.anaconda.com/miniconda/Miniconda3-py311_24.7.1-0-Linux-x86_64.sh", "https://github.com/conda-forge/miniforge/releases/download/24.5.0-0/Mambaforge-24.5.0-0-Linux-x86_64.sh")
+
     # Create a logger for the build process
     logger = setup_logger(image_name, build_dir / "build_image.log")
     logger.info(
