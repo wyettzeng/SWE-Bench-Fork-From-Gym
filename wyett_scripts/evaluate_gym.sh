@@ -12,10 +12,9 @@ export DOCKER_HOST=unix://tmp/podman-run-68344/podman/podman.sock
 export CONTAINER_HOST=$DOCKER_HOST
 unshare -r
 
-export RUN_DIR="$SCRATCH_DISK/runs/swegym_pandas_qwen"
 rm -rf logs
 
-
+export RUN_DIR="$SCRATCH_DISK/runs/swegym_pandas_qwen"
 python -m swebench.harness.run_evaluation \
     --dataset_name SWE-Gym/SWE-Gym \
     --predictions_path "${RUN_DIR}/preds.json" \
