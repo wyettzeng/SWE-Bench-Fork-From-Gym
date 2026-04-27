@@ -66,6 +66,8 @@ def run_instance(
         use_remote_instance_image: bool = False,
         remote_instance_image_namespace: str = DEFAULT_INSTANCE_IMAGE_NAMESPACE,
         timeout: int | None = None,
+        log_dir_root: Path | str | None = None,
+        quiet: bool = False,
     ):
     """
     Run a single instance with the given prediction.
@@ -78,11 +80,14 @@ def run_instance(
         client (docker.DockerClient): Docker client
         run_id (str): Run ID
         timeout (int): Timeout for running tests
+        log_dir_root (Path | str | None): Root directory for evaluation logs
+        quiet (bool): Whether to suppress terminal status messages
     """
     # Set up logging directory
     instance_id = test_spec.instance_id
     model_name_or_path = pred.get("model_name_or_path", "None").replace("/", "__")
-    log_dir = RUN_EVALUATION_LOG_DIR / run_id / model_name_or_path / instance_id
+    log_root = Path(log_dir_root) if log_dir_root is not None else RUN_EVALUATION_LOG_DIR
+    log_dir = log_root / run_id / model_name_or_path / instance_id
     log_dir.mkdir(parents=True, exist_ok=True)
 
     # Link the image build dir in the log dir
@@ -213,11 +218,13 @@ def run_instance(
     except EvaluationError as e:
         error_msg = traceback.format_exc()
         logger.info(error_msg)
-        print(e)
+        if not quiet:
+            print(e)
     except BuildImageError as e:
         error_msg = traceback.format_exc()
         logger.info(error_msg)
-        print(e)
+        if not quiet:
+            print(e)
     except Exception as e:
         error_msg = (f"Error in evaluating model for {instance_id}: {e}\n"
                      f"{traceback.format_exc()}\n"

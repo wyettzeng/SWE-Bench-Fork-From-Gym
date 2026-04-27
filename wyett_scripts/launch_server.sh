@@ -17,4 +17,6 @@ python -m swebench.harness.eval_server \
     --dataset_name SWE-Gym/SWE-Gym \
     --split train \
     --max_workers 12 \
-    --remote_image_namespace docker.io/xingyaoww
+    --remote_image_namespace docker.io/xingyaoww \
+    --log_dir "$SCRATCH_DISK/evaluator_logs/" \
+    --port 8080
