@@ -30,7 +30,7 @@ class FakeTestSpec:
     instance_image_key = "sweb.eval.x86_64.repo__pkg-1:latest"
 
 
-def make_service(monkeypatch, tmp_path, datum, available):
+def make_service(monkeypatch, tmp_path, datum, available, image_map_path=None):
     fake_client = FakeDockerClient(available)
     monkeypatch.setattr(
         eval_server,
@@ -45,6 +45,7 @@ def make_service(monkeypatch, tmp_path, datum, available):
         max_workers=1,
         remote_image_namespace="docker.io/example",
         log_dir=tmp_path,
+        image_map_path=image_map_path,
     )
     service._test_spec_cache[datum[KEY_INSTANCE_ID]] = FakeTestSpec()
     return service, fake_client
@@ -117,6 +118,63 @@ def test_local_service_runs_with_resolved_local_image(monkeypatch, tmp_path):
     service._run_job(job.job_id)
 
     assert captured["image"] == image_name
+    assert job.status == "completed"
+    assert job.result["resolved"] is True
+
+
+def test_local_service_runs_with_resolved_apptainer_image(monkeypatch, tmp_path):
+    image = tmp_path / "images" / "repo.sif"
+    image.parent.mkdir()
+    image.write_text("")
+    image_map_path = tmp_path / "image_map.json"
+    image_map_path.write_text(
+        json.dumps(
+            {
+                "repo__pkg-1": {
+                    "status": "completed",
+                    "local_image": str(image),
+                    "image_format": "sif",
+                }
+            }
+        )
+    )
+    datum = {KEY_INSTANCE_ID: "repo__pkg-1"}
+    service, _ = make_service(
+        monkeypatch,
+        tmp_path,
+        datum,
+        available=set(),
+        image_map_path=image_map_path,
+    )
+    job = eval_server.Job(
+        job_id="job-1",
+        instance_id="repo__pkg-1",
+        model_patch="",
+        model_name_or_path="model",
+        timeout=1,
+        dedupe_key="key",
+    )
+    service._jobs[job.job_id] = job
+    captured = {}
+
+    def fake_run_apptainer_instance(**kwargs):
+        captured["image"] = kwargs["image"]
+        return (
+            "repo__pkg-1",
+            {
+                "repo__pkg-1": {
+                    "resolved": True,
+                    "tests_status": {"PASS": ["test_ok"], "FAIL": []},
+                }
+            },
+        )
+
+    monkeypatch.setattr(swegym_local, "run_apptainer_instance", fake_run_apptainer_instance)
+
+    service._run_job(job.job_id)
+
+    assert service.resolve_local_runtime_image("repo__pkg-1").runtime == "apptainer"
+    assert captured["image"] == str(image)
     assert job.status == "completed"
     assert job.result["resolved"] is True
 

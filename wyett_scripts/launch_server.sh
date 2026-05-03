@@ -10,7 +10,7 @@ export CONTAINER_HOST=$DOCKER_HOST
 unshare -r
 
 
-python -m swebench.harness.eval_server \
+python -m swebench.harness.swegym_local \
     --dataset_name SWE-Gym/SWE-Gym \
     --split train \
     --max_workers 16 \
