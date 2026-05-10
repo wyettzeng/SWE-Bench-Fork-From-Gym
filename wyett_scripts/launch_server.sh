@@ -15,5 +15,5 @@ python -m swebench.harness.swegym_local \
     --split train \
     --max_workers 16 \
     --remote_image_namespace docker.io/xingyaoww \
-    --log_dir "$SCRATCH_DISK/evaluator_logs2/" \
+    --log_dir "$SCRATCH_DISK/evaluator_server/r0/" \
     --port 8080
