@@ -7,8 +7,8 @@ env \
     podman system service -t 0 &
 export DOCKER_HOST=unix://tmp/podman-run-68344/podman/podman.sock
 export CONTAINER_HOST=$DOCKER_HOST
-unshare -r
-
+unshare -r bash -lc '
+set -euo pipefail
 
 python -m swebench.harness.swegym_local \
     --dataset_name SWE-Gym/SWE-Gym \
@@ -17,3 +17,4 @@ python -m swebench.harness.swegym_local \
     --remote_image_namespace docker.io/xingyaoww \
     --log_dir "$SCRATCH_DISK/evaluator_server/r0/" \
     --port 8080
+'
